@@ -1,0 +1,27 @@
+package com.kite.test.guava.collection;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Test;
+
+import com.google.common.collect.Lists;
+
+/**
+ * 
+ * 类ListsTest.java的实现描述：测试guava Lists
+ * 
+ * @author pengliang 2016年10月14日 下午3:18:15
+ */
+public class ListsTest {
+
+	@Test
+	public void test() {
+		//创建list
+		ArrayList<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5);
+		System.out.println(list); //[1, 2, 3, 4, 5]
+		//切割list,根据给定list包装成list<list>
+		List<List<Integer>> partition = Lists.partition(list, 2);
+		System.out.println(partition); //[[1, 2], [3, 4], [5]]
+	}
+}

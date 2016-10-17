@@ -1,0 +1,69 @@
+package com.kite.test.guava.base;
+
+import org.junit.Test;
+
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Objects;
+import com.google.common.collect.ComparisonChain;
+
+/**
+ * 
+ * 类ObjectsTest.java的实现描述：测试guava Objects
+ * @author pengliang 2016年10月14日 上午11:59:04
+ */
+public class ObjectsTest {
+	
+	/**
+	 * 测试objects针对hashCode处理（可以使用java自带的同api）以及toString的处理，ComparisonChain链式比较
+	 */
+	@Test
+	public void testObjects() {
+		Book book = new Book();
+		book.name = "kite";
+		book.author = "kite";
+		book.price = 50D;
+		System.out.println(book);
+		System.out.println(book.hashCode());
+		System.out.println(book.hashCode());
+	}
+	
+	/**
+	 * 测试获取非null默认值
+	 */
+	@Test
+	public void testObjects2() {
+		String str = null;
+		str = MoreObjects.firstNonNull(str, "defaut value");
+		System.out.println(str);
+	}
+
+	class Book implements Comparable<Book> {
+		
+		private String name;
+		private String author;
+		private Double price;
+		
+		@Override
+		public int hashCode() {
+			return Objects.hashCode(name, author, price);
+		}
+		
+		@Override
+		public String toString() {
+			return MoreObjects.toStringHelper(this).add("name", name)
+					.add("author", author)
+					.add("price", price).
+					omitNullValues() //去除空属性
+					.toString();
+					
+		}
+		
+		public int compareTo(Book o) {
+			return ComparisonChain.start() //链式比较,在第一个非0处返回
+					.compare(this.name, o.name)
+					.compare(this.author, o.author)
+					.compare(this.price, o.price).result();
+		}
+		
+	}
+}

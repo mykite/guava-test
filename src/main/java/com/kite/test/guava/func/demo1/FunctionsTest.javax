@@ -1,0 +1,68 @@
+package com.kite.test.guava.func.demo1;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Test;
+
+import com.google.common.base.Function;
+import com.google.common.base.Functions;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+
+/**
+ * 
+ * 类FunctionsTest.java的实现描述：测试guava Fuctions
+ * 
+ * @author pengliang 2016年10月14日 下午2:32:43
+ */
+public class FunctionsTest {
+
+	/**
+	 * 测试 现在你想在一个Map<String, State>(key为州的编号)对象中查找某个key, 你可以：
+	 */
+	@Test
+	public void testFunc1() {
+		String key = "address";
+		Map<String, State> stateMap = new HashMap<String, State>();
+		stateMap.put("address", null);
+		Function<String, State> lookup = Functions.forMap(stateMap);
+		System.out.println(lookup.apply(key)); // key不存在会抛异常
+		// 你也可以给不存在的key指定一个默认值
+		// Function<String, State> lookup = Functions.forMap(states, null);
+	}
+
+	/**
+	 * 测试 现在你想在一个Map<String, State>(key为州的编号)对象中查找某个key, 你可以：
+	 */
+	@Test
+	public void testFunc2() {
+		String key = "address";
+		Map<String, State> stateMap = new HashMap<String, State>();
+		State state = new State();
+		Set<City> citys = new HashSet<City>();
+		citys.add(new City("guangzhou", "1", 20));
+		citys.add(new City("shanghai", "2", 21)); 
+		state.setCitys(citys);
+		stateMap.put("address", state);
+		Function<String, State> lookup = Functions.forMap(stateMap);
+		Function<State, String> stateFunction = new StateToCityString(); // 州到城市的转换
+		Function<String, String> stateCitiesFunction = Functions.compose(stateFunction, lookup); // 组合Function
+		System.out.println(stateCitiesFunction.apply(key));
+		//等价于stateFunction.apply(lookup.apply(key));   
+	}
+	
+	@Test
+	public void testPredicate() {
+		Map<String, City> stateMap = new HashMap<String, City>();
+		stateMap.put("guangzhou", new City("guangzhou", "1", 20));
+		stateMap.put("shanghai", new City("shanghai", "2", 21));
+		Function<String, City> lookup = Functions.forMap(stateMap);
+		PopulationPredicate populationPredicate = new PopulationPredicate();
+		Predicates.and(populationPredicate);
+		Predicate<String> compose = Predicates.compose(populationPredicate, lookup);
+		System.out.println(compose.toString());
+	}
+}

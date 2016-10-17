@@ -1,0 +1,17 @@
+package com.kite.test.guava.eventbus;
+
+import org.junit.Test;
+
+/**
+ * 
+ * 类EventBusTest1.java的实现描述：测试guava Event Bus 
+ * @author pengliang 2016年10月17日 下午5:14:01
+ */
+public class EventBusTest1 {
+
+	@Test
+	public void test() { 
+		
+	}
+	
+}

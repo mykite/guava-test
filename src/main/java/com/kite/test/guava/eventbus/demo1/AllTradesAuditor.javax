@@ -1,0 +1,41 @@
+package com.kite.test.guava.eventbus.demo1;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+
+/**
+ * 
+ * 类AllTradesAuditor.java的实现描述：卖出和购买审计，即订阅者 
+ * @author pengliang 2016年10月17日 下午5:34:43
+ */
+public class AllTradesAuditor {
+	private List<BuyEvent> buyEvents = new ArrayList<BuyEvent>();
+	private List<SellEvent> sellEvents = new ArrayList<SellEvent>();
+	
+	public AllTradesAuditor(EventBus eventBus) {
+		eventBus.register(this);
+	}
+	
+	/**
+	 * 订阅卖出事件
+	 * @param sellEvent
+	 */
+	@Subscribe
+	public void auditSell(SellEvent sellEvent) {
+		sellEvents.add(sellEvent);
+		System.out.println("received tradeSellEvent:" + sellEvent);
+	}
+
+	/**
+	 * 订阅购买事件
+	 * @param buyEvent
+	 */
+	@Subscribe
+	public void auditBuy(BuyEvent buyEvent) {
+		buyEvents.add(buyEvent);
+		System.out.println("received tradeBuyEvent:" + buyEvent);
+	}
+}

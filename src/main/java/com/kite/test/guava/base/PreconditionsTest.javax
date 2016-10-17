@@ -1,0 +1,38 @@
+package com.kite.test.guava.base;
+
+import org.junit.Test;
+
+import com.google.common.base.Preconditions;
+
+/**
+ * 
+ * 类PreconditionsTest.java的实现描述：测试guava Preconditions
+ * @author pengliang 2016年10月14日 上午11:53:23
+ */
+public class PreconditionsTest {
+	
+	//Preconditions用来判断条件的一个工具，类似junit中Aseert功能。
+	@Test
+	public void testCheckNotNull() {
+		Object obj = null;
+		Preconditions.checkNotNull(obj, "检查对象不能为空");
+	}
+	
+	@Test
+	public void testCheckElementIndex() {
+		int index = 1;
+		int[] arr = {1, 2};
+		Preconditions.checkElementIndex(index, arr.length,"检查数组索引");
+	}
+	
+	@Test
+	public void testCheckArgument() {
+		int valueToSet = 99;
+		Preconditions.checkArgument(valueToSet <= 100, "检查参数值");
+	}
+	
+	@Test
+	public void testCheckState() {
+		Preconditions.checkState(true, "检查对象状态");
+	}
+}

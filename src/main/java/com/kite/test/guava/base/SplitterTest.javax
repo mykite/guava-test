@@ -1,0 +1,42 @@
+package com.kite.test.guava.base;
+
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+import com.google.common.base.Splitter;
+import com.google.common.base.Splitter.MapSplitter;
+
+/**
+ * 
+ * 类SpliterTest.java的实现描述：对guava Spliter进行测试 
+ * @author pengliang 2016年10月14日 上午11:09:06
+ */
+public class SplitterTest {
+	
+	/**
+	 * 测试基础splitter
+	 */
+	@Test
+	public void testSplitterStr() {
+		String str = "abc , xxx,   ddd,";
+		//omitEmptyStrings去除空字符串对象
+		//trimResults 去除两边空字符串
+		Splitter splitter = Splitter.on(",").omitEmptyStrings().trimResults();
+		List<String> splitToList = splitter.splitToList(str);
+		System.out.println(splitToList); //[abc, xxx, ddd]  //去除omitEmptyStrings [abc, xxx, ddd,]
+		
+	}
+	
+	/**
+	 * 测试MapSplitter
+	 */
+	@Test
+	public void testMapSplitterStr() {
+		String str = "name=kite,age=11";
+		MapSplitter mapSplitter = Splitter.on(",").omitEmptyStrings().trimResults().withKeyValueSeparator("=");
+		Map<String, String> mapSplit = mapSplitter.split(str);
+		System.out.println(mapSplit); //{name=kite, age=11}
+	}
+}

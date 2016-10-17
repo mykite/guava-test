@@ -1,0 +1,43 @@
+package com.kite.test.guava.eventbus.demo1;
+
+/**
+ * 
+ * 类TradeAccount.java的实现描述：TODO 类实现描述 
+ * @author pengliang 2016年10月17日 下午5:18:48
+ */
+public class TradeAccount {
+	
+	/**
+	 * 账户id
+	 */
+	private String id;
+	/**
+	 * 账户余额
+	 */
+	private Double amount;
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public Double getAmount() {
+		return amount;
+	}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
+	public TradeAccount() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public TradeAccount(String id, Double amount) {
+		super();
+		this.id = id;
+		this.amount = amount;
+	}
+	@Override
+	public String toString() {
+		return "TradeAccount [id=" + id + ", amount=" + amount + "]";
+	}
+}

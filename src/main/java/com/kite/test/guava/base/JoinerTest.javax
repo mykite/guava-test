@@ -1,0 +1,92 @@
+package com.kite.test.guava.base;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Joiner.MapJoiner;
+
+/**
+ * 
+ * 类JoinerTest.java的实现描述：对guava Joiner相关类进行测试
+ * 
+ * @author pengliang 2016年10月14日 上午10:45:12
+ */
+public class JoinerTest {
+
+	/**
+	 * 测试链接字符串
+	 */
+	@Test
+	public void testAppendStr() {
+		List<String> langs = new ArrayList<String>();
+		langs.add(null);
+		langs.add("");
+		langs.add("null");
+		String delimiter = ",";
+		// Joiner类一旦创建则不可变，满足不可变性，因此线程安全
+		Joiner joiner = Joiner.on(delimiter);
+				
+		// 忽略null
+		String excludeNullString = joiner.skipNulls().join(langs);
+		// 将null替代为empty字符串
+		String replaceNullString = joiner.useForNull("empty").join(langs);
+		System.out.println("excludeNullString: " + excludeNullString);
+		System.out.println("replaceNullString: " + replaceNullString);
+				
+		// 不对null处理，默认会抛NullPointerException
+		String defaultNullString = joiner.join(langs); //langs为List<String>
+		System.out.println("defaultNullString: " + defaultNullString);
+		
+	}
+	
+	/**
+	 * 测试链接多个字符串
+	 */
+	@Test
+	public void testMulAppendStr() {
+		String delimiter = ",";
+		// Joiner类一旦创建则不可变，满足不可变性，因此线程安全
+		Joiner joiner = Joiner.on(delimiter).skipNulls();
+		//joiner.useForNull("empty"); //重复定义null操作会抛异常
+		String res = joiner.join(null, "foo","bar");
+		System.out.println(res); //foo,bar
+	}
+	
+	/**
+	 * 测试appendTo到实现了Appendable接口的类中
+	 * @throws IOException
+	 */
+	@Test
+	public void testAppendTo() throws IOException {
+		//append到StringBuilder
+		StringBuilder stringBuilder = new StringBuilder();
+		Joiner joiner = Joiner.on(",").skipNulls();//，表示
+		joiner.appendTo(stringBuilder, "appendTo", "StringBuilder");
+		System.out.println(stringBuilder); //appendTo,StringBuilder
+				
+		//append到输出流
+		FileWriter writer = new FileWriter("append_text.txt");
+		joiner.appendTo(writer, "appendTo", "FileWriter");
+		writer.close();
+	}
+	
+	/**
+	 * 通过MapJoiner链接Map对象
+	 */
+	@Test
+	public void testMapJoiner() {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("name", "kite");
+		map.put("age", "11");
+		MapJoiner mapJoiner = Joiner.on(",").withKeyValueSeparator("=");
+		String join = mapJoiner.join(map);
+		System.out.println(join);//结果name=kite,age=11
+	}
+}

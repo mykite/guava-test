@@ -1,0 +1,17 @@
+package com.kite.test.guava.func.demo1;
+
+import com.google.common.base.Predicate;
+
+/**
+ * 
+ * 类PopulationPredicate.java的实现描述：TODO 类实现描述 
+ * @author pengliang 2016年10月14日 下午2:53:31
+ */
+public class PopulationPredicate implements Predicate<City> {
+
+	public boolean apply(City input) {
+		//过滤人口小于500000的城市
+		return input.getPopulation() <= 50000;
+	}
+
+}

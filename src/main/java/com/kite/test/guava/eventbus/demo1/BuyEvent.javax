@@ -1,0 +1,17 @@
+package com.kite.test.guava.eventbus.demo1;
+
+import java.util.Date;
+
+/**
+ * 
+ * 类BuyEvent.java的实现描述：TODO 类实现描述 
+ * @author pengliang 2016年10月17日 下午5:25:51
+ */
+public class BuyEvent extends TradeAccountEvent {
+
+	public BuyEvent(Double amount, Date tradeTime, TradeAccount tradeAccount, TradeType tradeType) {
+		super(amount, tradeTime, tradeAccount, tradeType);
+	}
+	
+	
+}
