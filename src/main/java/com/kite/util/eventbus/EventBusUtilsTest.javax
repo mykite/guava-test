@@ -1,0 +1,37 @@
+package com.kite.util.eventbus;
+
+import org.junit.Test;
+
+/**
+ * 
+ * 类EventBusUtilsTest.java的实现描述：测试EventBusUtils 
+ * @author pengliang 2016年10月18日 上午11:41:04
+ */
+public class EventBusUtilsTest {
+	
+	@Test
+	public void test() {
+		EventBusUtils.getInstance().invoke(new Operate(), "log", new Object[]{"test"});
+	}
+	
+	@Test
+	public void testInvokeAndCallback() {
+		EventBusUtils.getInstance().invokeAndCallback(new Operate(), "add", new Object[]{1, 2}, new Callback() {
+			
+			@Override
+			public void callback(Object val) {
+				System.out.println("result:" + val);
+			}
+		});
+	}
+}
+
+class Operate {
+	public void log(String name) {
+		System.out.println("log:" + name);
+	}
+	
+	public int add(Integer a, Integer b) { //int a int b 出錯 找不到方法
+		return a + b;
+	}
+}

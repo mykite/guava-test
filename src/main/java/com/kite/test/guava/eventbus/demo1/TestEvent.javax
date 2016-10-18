@@ -1,0 +1,29 @@
+package com.kite.test.guava.eventbus.demo1;
+
+import java.util.concurrent.Executors;
+
+import org.junit.Test;
+
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+
+/**
+ * 
+ * 类TestEvent.java的实现描述：测试
+ * 
+ * @author pengliang 2016年10月18日 上午10:57:56
+ */
+public class TestEvent {
+
+	@Test
+	public void test() {
+		// 同步
+		EventBus eventBus = new EventBus();
+		// 异步
+		AsyncEventBus asyncEventBus = new AsyncEventBus(Executors.newFixedThreadPool(10));
+		AllTradesAuditor auditor = new AllTradesAuditor(asyncEventBus);
+		SimpleTradeExecutor tradeExecutor = new SimpleTradeExecutor(asyncEventBus);
+		tradeExecutor.executeTrade(new TradeAccount(), 1000D, TradeType.SELL);
+		tradeExecutor.executeTrade(new TradeAccount(), 2000D, TradeType.BUY);
+	}
+}

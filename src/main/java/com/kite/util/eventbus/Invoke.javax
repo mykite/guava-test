@@ -1,0 +1,46 @@
+package com.kite.util.eventbus;
+
+/**
+ * 
+ * 类Invoke.java的实现描述：Invoke调用对象
+ * @author pengliang 2016年10月18日 下午2:22:43
+ */
+public class Invoke {
+	private Object object;
+	private String method;
+	private Object[] params;
+	private Class<?>[] paramsClass;
+	private Callback callback;
+	public Invoke(Object object, String method, Object[] params, Class<?>[] paramsClass) {
+		super();
+		this.object = object;
+		this.method = method;
+		this.params = params;
+		this.paramsClass = paramsClass;
+	}
+	
+	public Invoke(Object object, String method, Object[] params, Class<?>[] paramsClass, Callback callback) {
+		super();
+		this.object = object;
+		this.method = method;
+		this.params = params;
+		this.paramsClass = paramsClass;
+		this.callback = callback; 
+	}
+	public Object getObject() {
+		return object;
+	}
+	public String getMethod() {
+		return method;
+	}
+	public Object[] getParams() {
+		return params;
+	}
+	public Class<?>[] getParamsClass() {
+		return paramsClass;
+	}
+	
+	public Callback getCallback() {
+		return callback;
+	}
+}

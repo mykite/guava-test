@@ -1,0 +1,10 @@
+package com.kite.util.eventbus;
+
+/**
+ * 
+ * 类Callback.java的实现描述：对回调进行处理 
+ * @author pengliang 2016年10月18日 下午2:25:22
+ */
+public abstract class Callback {
+	public abstract void callback(Object val); 
+}

@@ -1,0 +1,25 @@
+package com.kite.test.guava.cache;
+
+import java.awt.print.Book;
+import java.util.concurrent.ConcurrentMap;
+
+import org.junit.Test;
+
+import com.google.common.cache.Cache;
+import com.google.common.collect.MapMaker;
+
+/**
+ * 
+ * 类CacheTest.java的实现描述：测试guava 缓存 
+ * @author pengliang 2016年10月18日 下午2:45:38
+ */
+public class CacheTest {
+	
+	@Test
+	public void testCreateMapMaker() {
+		ConcurrentMap<String,Book> books = new MapMaker().concurrencyLevel(2) //并发级别,即允许最多2个线程并发更新, 默认值为4
+                //.softValues() //使用SoftReference引用对象包装value
+                .makeMap(); //构建Map对象
+	}
+
+}

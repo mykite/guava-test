@@ -1,0 +1,79 @@
+package com.kite.util.eventbus;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.Executors;
+
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.Subscribe;
+
+/**
+ * 
+ * 类EventBusUtils.java的实现描述：EventBusUtils异步调用实现
+ * @author pengliang 2016年10月18日 上午11:09:12
+ */
+public class EventBusUtils {
+	private static AsyncEventBus asyncEventBus = new AsyncEventBus(Executors.newFixedThreadPool(10));
+	//private static EventBus asyncEventBus = new EventBus();
+	private static EventBusUtils eventBusUtils = new EventBusUtils();
+	
+	private EventBusUtils() {}
+	public static EventBusUtils getInstance() {
+		asyncEventBus.register(eventBusUtils);
+		return eventBusUtils;
+	}
+	public void invoke(Object object, String method, Object[] params, Class<?>[] paramsClass) {
+		asyncEventBus.post(new Invoke(object, method, params, paramsClass));
+	}
+	
+	public void invoke(Object object, String method, Object[] params) {
+		Class<?>[] paramsClass  = new Class[params.length];
+		int index = 0;
+		for(Object tempObj : params) {
+			paramsClass[index++] = tempObj.getClass();
+		}
+		asyncEventBus.post(new Invoke(object, method, params, paramsClass));
+	}
+	
+	public <T> void invokeAndCallback(Object object, String method, Object[] params, Callback callback) {
+		Class<?>[] paramsClass  = new Class[params.length];
+		int index = 0;
+		for(Object tempObj : params) {
+			paramsClass[index++] = tempObj.getClass();
+		}
+		asyncEventBus.post(new Invoke(object, method, params, paramsClass, callback));
+	}
+	
+	@Subscribe
+	private void invoke1(Invoke invoke) {
+		Object object = invoke.getObject();
+		String methodName = invoke.getMethod();
+		Class<?>[] paramsClass = invoke.getParamsClass();
+		Object[] params = invoke.getParams();
+		try {
+			Method method = object.getClass().getDeclaredMethod(methodName, paramsClass);
+			Object retVal = method.invoke(object, params);
+			if(invoke.getCallback() != null) {
+				invoke.getCallback().callback(retVal);
+			}
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+}
+
+
