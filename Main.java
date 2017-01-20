@@ -1,4 +1,3 @@
-package com.kite.test.dht.test;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +46,7 @@ public class Main {
         // 如果想收到其他节点发送过来的消息必须把外网端口映射到内网端口 这里是内网端口 只要登录路由器做一个端口映射就好
         final int port = 50000;
         // 节点数 这里表示从50000到50255这256个端口将会被监听
-        final int nodeCount = 20;
+        final int nodeCount = 5;
         final int processorCount = Runtime.getRuntime().availableProcessors();
         final String id = "javadht:541241544";
         
@@ -652,7 +651,7 @@ class DHTServer {
         
         dataProcessor.execute(new Runnable() {
             public void run() {
-            	int maxSize = 1000;
+            	int maxSize = 100;
                 Set<String> hashSet = new HashSet<>(maxSize);
             	for(;;) {
                     SelectionKey key = null;
@@ -697,7 +696,7 @@ class DHTServer {
                                 responseFindNode(key, address, t, new String(baos.toByteArray(), "iso-8859-1"));
                             } else if(q.equals("get_peers")) {
                                 String infoHash = new String(((BencodeMap) (response.get(new BencodeString("a")))).get(new BencodeString("info_hash")).getData(), "iso-8859-1");
-                                //println(infoHash);
+                                println(infoHash);
                                 hashSet.add(infoHash);
                                 
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -709,7 +708,7 @@ class DHTServer {
                                 responseGetPeers(key, address, t, new String(baos.toByteArray(), "iso-8859-1"), "dg");
                             } else if(q.equals("announce_peer")) {
                                 String infoHash = new String(((BencodeMap) (response.get(new BencodeString("a")))).get(new BencodeString("info_hash")).getData(), "iso-8859-1");
-                                //println(infoHash);
+                                println(infoHash);
                                 hashSet.add(infoHash);
                                 responseAnnouncePeer(key, address, t);
                             }
@@ -722,6 +721,17 @@ class DHTServer {
                     } catch (Exception e) {
                     }
                 }
+            }
+	    private void println(String infoHash) {
+                StringBuilder msg = new StringBuilder(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS").format(new Date())).append(" magnet:?xt=urn:btih:");
+                for(char c : infoHash.toCharArray()) {
+                    String hs = Integer.toHexString(c);
+                    if(hs.length() == 1) {
+                        msg.append(0);
+                    }
+                    msg.append(hs);
+                }
+                System.out.println(msg);
             }
             
         });
