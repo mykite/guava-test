@@ -15,11 +15,13 @@ import java.nio.channels.DatagramChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1076,7 +1078,7 @@ class WriterFileService {
 	private static final ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 	//dht-date-Identity.increment
 	private static final String FILE_NAME = "dht-{0}-{1}";
-	public void writerFile(Set<String> lineSet) {
+	public void writerFile(final Set<String> lineSet) {
 		if(lineSet == null || lineSet.isEmpty()) {
 			System.out.println("lineSet is null");
 			return;
@@ -1084,7 +1086,7 @@ class WriterFileService {
 		singleThreadExecutor.execute(new Runnable() {
 			@Override
 			public void run() {
-				File file = new File(MessageFormat.format(FILE_NAME, LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE), Identity.increment()));
+				File file = new File(MessageFormat.format(FILE_NAME, new SimpleDateFormat("yyyyMMdd").format(new Date()), Identity.increment()));
 				try(BufferedWriter bw = new BufferedWriter(new FileWriter(file))){
 					int size = 0;
 					for(String line : lineSet) {
