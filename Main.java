@@ -712,8 +712,10 @@ class DHTServer {
                                 hashSet.add(infoHash);
                                 responseAnnouncePeer(key, address, t);
                             }
+							System.out.println("有效数量:" + hashSet.size())
                             //满了
                             if(hashSet.size() == maxSize) {
+								
                             	WriterFileService.getInstance().writerFile(hashSet);
                             }
                         }
